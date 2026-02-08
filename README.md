@@ -36,12 +36,13 @@ CREATE TABLE retail_sales(
     price_per_unit FLOAT,
     cogs FLOAT,
     total_sale FLOAT
-);```
----
+);
+```
+
 ### 2. Data Cleaning & QA
 Identified and handled records with missing values to ensure data integrity for downstream analysis.
 
-SQL
+```SQL
 -- Checking for NULL values
 SELECT * FROM retail_sales
 WHERE transactions_id IS NULL OR sale_date IS NULL OR total_sale IS NULL;
@@ -59,8 +60,9 @@ WHERE transactions_id IS NULL
     OR price_per_unit IS NULL
     OR cogs IS NULL
     OR total_sale IS NULL;
-3. Exploratory Data Analysis (EDA)
-SQL
+```
+###3. Exploratory Data Analysis (EDA)
+```SQL
 -- Total sales count
 SELECT COUNT(*) AS total_sales FROM retail_sales;
 
@@ -69,14 +71,16 @@ SELECT COUNT(DISTINCT customer_id) unique_customers_no FROM retail_sales;
 
 -- Unique categories
 SELECT COUNT(DISTINCT category) AS unique_categories FROM retail_sales;
-4. Business Analysis & Findings
-Q.1 Retrieve all columns for sales made on '2022-11-05'
-SQL
+```
+###4. Business Analysis & Findings
+##Q.1 Retrieve all columns for sales made on '2022-11-05'
+```SQL
 SELECT *
 FROM retail_sales 
 WHERE sale_date = '2022-11-05';
-Q.2 Retrieve 'Clothing' transactions with quantity > 10 in Nov-2022
-SQL
+```
+##Q.2 Retrieve 'Clothing' transactions with quantity > 10 in Nov-2022
+```SQL
 SELECT 
 	category,
 	CASE WHEN EXTRACT(MONTH FROM sale_date) = 11 THEN 'NOV' ELSE 'OTHERS' END AS month,
@@ -85,7 +89,8 @@ FROM retail_sales
 WHERE sale_date >= '2022-11-01' AND sale_date < '2022-12-01'
 GROUP BY 1,2 
 HAVING category = 'Clothing' AND SUM(quantity) > 10;
-Q.3 Calculate total sales for each category
+```
+##Q.3 Calculate total sales for each category
 SQL
 SELECT 
 	category,
@@ -95,19 +100,22 @@ SELECT
 FROM retail_sales
 WHERE sale_date >= '2022-11-01' AND sale_date < '2022-12-01'
 GROUP BY 1,2 ;
-Q.4 Find the average age of customers in the 'Beauty' category
-SQL
+
+##Q.4 Find the average age of customers in the 'Beauty' category
+```SQL
 SELECT    
 	category,
 	ROUND(AVG(age))::NUMERIC
 FROM retail_sales
 WHERE category = 'Beauty'
 GROUP BY category;
-Q.5 Find all transactions where total_sale > 1000
-SQL
+```
+##Q.5 Find all transactions where total_sale > 1000
+```SQL
 SELECT * FROM retail_sales WHERE total_sale > 1000;
-Q.6 Total number of transactions by gender in each category
-SQL
+```
+##Q.6 Total number of transactions by gender in each category
+```SQL
 -- Standard Group By
 SELECT
 	gender,
@@ -127,8 +135,9 @@ FROM retail_sales
 SELECT DISTINCT *
 FROM transactions
 ORDER BY gender, category;
-Q.7 Find the best selling month in each year
-SQL
+````
+##Q.7 Find the best selling month in each year
+```SQL
 WITH average_sales as(
 SELECT
 	EXTRACT(YEAR FROM sale_date) AS year,
@@ -143,8 +152,9 @@ SELECT *,
 FROM average_sales
 )
 SELECT * FROM ranked_sales WHERE Rnk = 1;
-Q.8 Find the top 5 customers based on highest total sales
-SQL
+```
+##Q.8 Find the top 5 customers based on highest total sales
+```SQL
 SELECT  
     customer_id,
     SUM(total_sale) as total_sales
@@ -152,15 +162,17 @@ FROM retail_sales
 GROUP BY 1
 ORDER BY 2 DESC
 LIMIT 5;
-Q.9 Unique customer count per category
-SQL
+```
+##Q.9 Unique customer count per category
+```SQL
 SELECT  
     category,    
     COUNT(DISTINCT customer_id) as cnt_unique_cs
 FROM retail_sales
 GROUP BY category;
-Q.10 Create shifts and count orders per shift
-SQL
+```
+##Q.10 Create shifts and count orders per shift
+```SQL
 WITH hourly_sale AS (
 SELECT *,
     CASE
@@ -175,12 +187,13 @@ SELECT
     COUNT(*) as total_orders     
 FROM hourly_sale
 GROUP BY shift;
-📈 Key Findings
+```
+###📈 Key Findings
 Customer Segmentation: The analysis reveals that the 'Beauty' category attracts a specific age demographic, allowing for targeted marketing.
 
 Peak Sales Periods: High-value transactions and peak order volumes are concentrated in the evening shifts and during specific months like November.
 
 Customer Loyalty: A small group of high-value customers contributes significantly to total revenue, suggesting a need for personalized retention programs.
 
-🏁 Conclusion
+##🏁 Conclusion
 This project serves as a comprehensive introduction to data analysis using SQL. By completing the full workflow—from database setup and data cleaning to complex business queries—I have demonstrated the ability to extract meaningful insights from raw data. These skills are essential for data-driven decision-making in any retail or business environment.
