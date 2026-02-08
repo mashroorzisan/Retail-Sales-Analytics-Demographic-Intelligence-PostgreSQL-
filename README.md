@@ -36,8 +36,9 @@ CREATE TABLE retail_sales(
     price_per_unit FLOAT,
     cogs FLOAT,
     total_sale FLOAT
-);
-2. Data Cleaning & QA
+);```
+---
+### 2. Data Cleaning & QA
 Identified and handled records with missing values to ensure data integrity for downstream analysis.
 
 SQL
