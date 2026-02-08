@@ -37,3 +37,13 @@ CREATE TABLE retail_sales(
     cogs FLOAT,
     total_sale FLOAT
 );
+#### Q.2 Retrieve all transactions where the category is 'Clothing' and the quantity sold is more than 10 in the month of Nov-2022
+```sql
+SELECT 
+	category,
+	CASE WHEN EXTRACT(MONTH FROM sale_date) = 11 THEN 'NOV' ELSE 'OTHERS' END AS  month,
+	SUM(quantity) quantity
+FROM retail_sales
+WHERE sale_date >= '2022-11-01' AND sale_date < '2022-12-01'
+GROUP BY 1,2 
+HAVING category = 'Clothing' AND SUM(quantity) > 10;
